@@ -1,7 +1,7 @@
 <template>
     <div class="grid grid-cols-4 gap-20">
         <div class="col-span-1">
-            <table class="w-full">
+            <table class="w-full col-span-4">
                 <thead>
                     <tr>
                         <th>Название</th>
@@ -9,28 +9,50 @@
                 </thead>
                 <tbody>
                     <tr v-for="(row, index) in rows" :key="index">
-                        <td>
-                            <input v-model="row.value" type="text" class="w-full h-10"
-                                :class="{ 'border-red-500': checkName && this.rows.some(row => row.value === '') }"
-                                placeholder="Введите значение">
-                        </td>
+                        <div>
+                            <td class="w-1"> 
+                                <strong class="font-bold"> {{ index + 1 }} </strong> 
+                            </td>
+                            <td>
+                                <input v-model="row.value" type="text" class="w-21 h-10 p-0"
+                                    :class="{ 'border-red-500': checkName && this.rows.some(row => row.value === '') }"
+                                    placeholder="Введите значение">
+                            </td>
+                        </div>
                         <td>
                             <template v-if="index === 0">
                                 <button @click="addRow"
-                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                    class="bg-blue-500 
+                                    hover:bg-blue-700 
+                                    text-white 
+                                    font-bold 
+                                    w-8
+                                    h-10
+                                    rounded">
                                     +
                                 </button>
                             </template>
                             <template v-else>
                                 <button @click="removeRow(index)"
-                                    class="bg-red-400 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                    class="bg-red-400 
+                                    hover:bg-red-700 
+                                    text-white 
+                                    font-bold 
+                                    w-8
+                                    h-10
+                                    rounded">
                                     -
                                 </button>
                             </template>
                         </td>
+                        <td>
+                            <template v-if="index === 0">
+                                <input v-model="count" class="w-6 h-10 p-0">
+                            </template>
+                        </td>
                     </tr>
                     <tr>
-                        <td colspan="2">
+                        <td colspan="3">
                             <div v-if="checkName && this.rows.some(row => row.value === '')"
                                 class="bg-red-100 border border-red-500 text-red-700 px-4 py-2 rounded relative"
                                 role="alert">
@@ -142,6 +164,9 @@ import axios from 'axios'
 export default {
     data() {
         return {
+            count: 1,
+            sleeveDict: 0,
+            sleeveWeight: 0,
             rows: [{ value: '' }],
             unity: '',
             sleeveOption: '',
@@ -158,7 +183,9 @@ export default {
     methods: {
         addRow() {
             if (this.rows.length < this.maxRows) {
-                this.rows.push({ value: this.rows[0].value });
+                for (let i = 0; i < this.count; i++) {
+                    this.rows.push({ value: this.rows[0].value });
+                }
             }
         },
         removeRow(index) {
@@ -195,6 +222,7 @@ export default {
             this.rows = [{ value: '' }]
             this.unity = ''
             this.sleeveOption = ''
+            this.count = 1
             this.rows.splice(1)
         },
         checkParams() {
@@ -210,12 +238,21 @@ export default {
             }
             else if (this.sleeveOption) {
                 this.checkSleeve = false
+                console.log(this.sleeveOption)
             }
             if ((this.clientID === '') || (this.apiKey === '')) {
                 this.checkCred = true
             }
             else if ((this.clientID !== '') && (this.apiKey !== '')) {
                 this.checkCred = false
+            }
+            if (this.sleeveOption === 'Длинный рукав') {
+                this.sleeveDict = 82093
+                this.sleeveWeight = 400
+            }
+            if (this.sleeveOption === 'Короткий рукав') {
+                this.sleeveDict = 82094
+                this.sleeveWeight = 300
             }
         },
         request(name, unity) {
@@ -273,7 +310,15 @@ export default {
                         "id": 4596, // Длина рукава
                         "values": [
                             {
-                                "dictionary_value_id": 82093,
+                                "dictionary_value_id": this.sleeveDict, //82093 - длинный, 82094 - короткий
+                            }
+                        ]
+                    },
+                    {
+                        "id": 4655, // Инструкция по уходу
+                        "values": [
+                            {
+                                "value": "Ручная или деликатная машинная стирка рубашки"
                             }
                         ]
                     },
@@ -286,7 +331,15 @@ export default {
                         ]
                     },
                     {
-                        "id": 8292, // Значение для объединения?
+                        "id": 11650, // Количество упаковок
+                        "values": [
+                            {
+                                "value": "1"
+                            }
+                        ]
+                    },
+                    {
+                        "id": 8292, // Значение для объединения
                         "values": [
                             {
                                 "value": unity
@@ -299,20 +352,20 @@ export default {
                 "color_image": "",
                 "complex_attributes": [],
                 "currency_code": "RUB",
-                "depth": 300,
+                "depth": 350,
                 "dimension_unit": "mm",
                 "height": 60,
                 "images": [],
                 "images360": [],
                 "name": name,
-                "offer_id": "143210608",
+                "offer_id": name,
                 "pdf_list": [],
-                "price": "5555",
+                "price": "7777",
                 "primary_image": "",
                 "vat": "0",
-                "weight": 400,
+                "weight": this.sleeveWeight, // длинный - 400, коротки - 300
                 "weight_unit": "g",
-                "width": 350
+                "width": 300
             }
             return newItem
         }
