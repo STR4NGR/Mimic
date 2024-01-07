@@ -214,7 +214,6 @@ export default {
                     data.items.push(this.request(row.value, unity.value));
                     this.freeInput()
                 })
-                console.log(data)
                 return data
             }
         },
@@ -238,7 +237,6 @@ export default {
             }
             else if (this.sleeveOption) {
                 this.checkSleeve = false
-                console.log(this.sleeveOption)
             }
             if ((this.clientID === '') || (this.apiKey === '')) {
                 this.checkCred = true
