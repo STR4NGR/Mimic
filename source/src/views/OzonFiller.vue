@@ -55,7 +55,7 @@
                                 :class="{ 'border-red-500': checkUnity && unity === '' }" placeholder="Введите значение">
                         </td>
                         <td>
-                            <button @click="send"
+                            <button @click="sendData"
                                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                 OK
                             </button>
@@ -138,6 +138,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     data() {
         return {
@@ -163,7 +164,22 @@ export default {
         removeRow(index) {
             this.rows.splice(index, 1);
         },
-        send() {
+        async sendData() {
+            const headers = {
+                'Client-Id': this.clientID, // 1534308
+                'Api-Key': this.apiKey, // d0d3c300-7171-4004-8596-53f4e9ef9f80
+                'Content-Type': 'application/json'
+            }
+            const url = 'https://api-seller.ozon.ru/v2/product/import'
+            axios.post(url, this.getData(), { headers })
+                .then(response => {
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+        getData() {
             let data = { "items": [] }
             this.checkParams()
             if (!(this.checkName) && !(this.checkUnity) && !(this.checkSleeve) && !(this.checkCred)) {
@@ -172,6 +188,7 @@ export default {
                     this.freeInput()
                 })
                 console.log(data)
+                return data
             }
         },
         freeInput() {
@@ -182,7 +199,6 @@ export default {
         },
         checkParams() {
             this.checkName = this.rows.some(row => row.value === "")
-            console.log(this.checkName)
             if (this.unity === '') {
                 this.checkUnity = true
             }
