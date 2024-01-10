@@ -337,6 +337,30 @@ export default {
                         ]
                     },
                     {
+                        "id": 10096, // Цвет
+                        "values": [
+                            {
+                                "dictionary_value_id": 258411654,
+                            }
+                        ]
+                    },
+                    {
+                        "id": 10096, // Российский размер
+                        "values": [
+                            {
+                                "dictionary_value_id": 35646,
+                            }
+                        ]
+                    },
+                    {
+                        "id": 22232, // ТН ВЭД коды ЕАЭС
+                        "values": [
+                            {
+                                "dictionary_value_id": 971398646,
+                            }
+                        ]
+                    },
+                    {
                         "id": 8292, // Значение для объединения
                         "values": [
                             {
