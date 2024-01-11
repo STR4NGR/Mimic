@@ -210,8 +210,8 @@ export default {
             let data = { "items": [] }
             this.checkParams()
             if (!(this.checkName) && !(this.checkUnity) && !(this.checkSleeve) && !(this.checkCred)) {
-                this.rows.forEach((row) => {
-                    data.items.push(this.request(row.value, unity.value));
+                this.rows.forEach((row, index) => {
+                    data.items.push(this.request(row.value, index, unity.value));
                     this.freeInput()
                 })
                 return data
@@ -253,7 +253,21 @@ export default {
                 this.sleeveWeight = 300
             }
         },
-        request(name, unity) {
+        request(name, index, unity) {
+            let size = [
+                '35650', // 1
+                '35461', // 2
+                '35483', // 3
+                '35534', // 4
+                '35571', // 5
+                '35582', // 6
+                '35591', // 7
+                '35724', // 8
+                '35723', // 9
+                '35732', // 10
+                '35898', // 11
+                '35792', // 12
+            ]
             let newItem = {
                 "attributes": [
                     {
@@ -340,15 +354,15 @@ export default {
                         "id": 10096, // Цвет
                         "values": [
                             {
-                                "dictionary_value_id": 258411654,
+                                "dictionary_value_id": 369939085,
                             }
                         ]
                     },
                     {
-                        "id": 10096, // Российский размер
+                        "id": 4295, // Российский размер
                         "values": [
                             {
-                                "dictionary_value_id": 35646,
+                                "dictionary_value_id": size[index],
                             }
                         ]
                     },
@@ -359,7 +373,7 @@ export default {
                                 "dictionary_value_id": 971398646,
                             }
                         ]
-                    },
+                    },  
                     {
                         "id": 8292, // Значение для объединения
                         "values": [
@@ -369,7 +383,6 @@ export default {
                         ]
                     },
                 ],
-                "barcode": "112772873170",
                 "category_id": 17037056,
                 "color_image": "",
                 "complex_attributes": [],
@@ -377,7 +390,9 @@ export default {
                 "depth": 350,
                 "dimension_unit": "mm",
                 "height": 60,
-                "images": [],
+                "images": [
+                    "https://raw.githubusercontent.com/STR4NGR/Mixify/main/source/public/fileFiller.jpg"
+                ],
                 "images360": [],
                 "name": name,
                 "offer_id": name,
