@@ -198,13 +198,16 @@ export default {
                 'Content-Type': 'application/json'
             }
             const url = 'https://api-seller.ozon.ru/v2/product/import'
-            axios.post(url, this.getData(), { headers })
-                .then(response => {
-                    console.log(response.data);
-                })
-                .catch(error => {
-                    console.error(error);
-                });
+            const data = this.getData()
+            if (data !== null) {
+                axios.post(url, data, { headers })
+                    .then(response => {
+                        console.log(response.data);
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }
         },
         getData() {
             let data = { "items": [] }
@@ -215,6 +218,8 @@ export default {
                     this.freeInput()
                 })
                 return data
+            } else {
+                return null
             }
         },
         freeInput() {

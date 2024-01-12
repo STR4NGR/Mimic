@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import OzonFiller from '../views/OzonFiller.vue'
 import YandexFiller from '../views/YandexFiller.vue'
+import Error from '../views/Error.vue'
 const routes = [
     {
         path: '/',
@@ -19,6 +20,10 @@ const routes = [
     {
         path: '/yandexfiller',
         component: YandexFiller
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        component: Error
     }
 ]
 const router = createRouter({
